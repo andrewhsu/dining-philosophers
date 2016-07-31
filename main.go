@@ -20,7 +20,7 @@ type Spork struct {
 type Philosopher struct {
 	name                  string
 	leftSpork, rightSpork *Spork
-	opposite              bool
+	rightFirst            bool
 }
 
 // Dine is an entire eating cycle from pickup of utensil to put down.
@@ -28,7 +28,7 @@ func (p *Philosopher) Dine(n int64, wg *sync.WaitGroup) {
 	defer wg.Done()
 	p.think(n)
 
-	if p.opposite {
+	if p.rightFirst {
 		log.Println(p.name, "taking right spork", p.rightSpork.id)
 		p.rightSpork.Lock()
 		p.think(n)
@@ -88,7 +88,7 @@ func main() {
 	philosophers := make([]*Philosopher, n)
 	for i := 0; i < n; i++ {
 		if *noDeadLock && n == 0 {
-			philosophers[i] = &Philosopher{name: names[i], leftSpork: sporks[i], rightSpork: sporks[(i+n-1)%n], opposite: true}
+			philosophers[i] = &Philosopher{name: names[i], leftSpork: sporks[i], rightSpork: sporks[(i+n-1)%n], rightFirst: true}
 		} else {
 			philosophers[i] = &Philosopher{name: names[i], leftSpork: sporks[i], rightSpork: sporks[(i+n-1)%n]}
 		}
