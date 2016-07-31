@@ -87,7 +87,7 @@ func main() {
 
 	philosophers := make([]*Philosopher, n)
 	for i := 0; i < n; i++ {
-		if *noDeadLock && n == 0 {
+		if *noDeadLock && i == 0 {
 			philosophers[i] = &Philosopher{name: names[i], leftSpork: sporks[i], rightSpork: sporks[(i+n-1)%n], rightFirst: true}
 		} else {
 			philosophers[i] = &Philosopher{name: names[i], leftSpork: sporks[i], rightSpork: sporks[(i+n-1)%n]}
